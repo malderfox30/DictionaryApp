@@ -1,14 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.yourWordsFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/tv_random_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Random word"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.07999998"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:textStyle="bold"/>
+
+        <ImageButton
+            android:id="@+id/ib_voice"
+            android:layout_width="68dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_baseline_keyboard_voice_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_random_word"
+            app:layout_constraintVertical_bias="0.050000012" />
+
+        <TextView
+            android:id="@+id/tv_score_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your score"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ib_voice"
+            app:layout_constraintVertical_bias="0.050000012"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ib_voice"
+            app:layout_constraintVertical_bias="0.120000005"
+            android:textSize="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_your_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your answer"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_score"
+            app:layout_constraintVertical_bias="0.110000014"
+            android:gravity="center"
+            android:textSize="25dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

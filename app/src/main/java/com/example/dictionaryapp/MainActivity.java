@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    public static boolean isAnhViet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -18,6 +18,8 @@ public class SplashActivity extends Activity {
     private ProgressBar pbLoading;
     public static ArrayList<Word> anhVietWords;
     public static ArrayList<Word> vietAnhWords;
+    public static ArrayList<String> favoriteAnhVietWordsId;
+    public static ArrayList<String> favoriteVietAnhWordsId;
 
     /** Called when the activity is first created. */
     @Override
@@ -41,11 +43,13 @@ public class SplashActivity extends Activity {
             }
         }, SPLASH_DISPLAY_LENGTH);
 
+        //Load dữ liệu từ databases
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 databaseAccess.setOpenHelperAnhViet();
                 anhVietWords = databaseAccess.getWordsAnhViet();
+                favoriteAnhVietWordsId = databaseAccess.getFavoriteWordsId();
                 databaseAccess.close();
             }
         });
@@ -55,6 +59,7 @@ public class SplashActivity extends Activity {
             public void run() {
                 databaseAccess.setOpenHelperVietAnh();
                 vietAnhWords = databaseAccess.getWordsVietAnh();
+                favoriteVietAnhWordsId = databaseAccess.getFavoriteWordsId();
                 databaseAccess.close();
             }
         });

@@ -57,6 +57,8 @@ public class vietAnhFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.vietAnhRecyclerView = view.findViewById(R.id.rv_viet_anh);
         this.vietAnhRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        MainActivity.isAnhViet = false;
         vietAnhWords = new ArrayList<Word>(SplashActivity.vietAnhWords);
         //Remove credits
         for(int i = 0; i < 3; i++){

@@ -55,6 +55,8 @@ public class anhVietFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.anhVietRecyclerView = view.findViewById(R.id.rv_anh_viet);
         this.anhVietRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        MainActivity.isAnhViet = true;
         anhVietWords = new ArrayList<Word>(SplashActivity.anhVietWords);
         //Remove credits
         for(int i = 0; i < 3; i++){

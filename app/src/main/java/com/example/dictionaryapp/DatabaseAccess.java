@@ -1,5 +1,6 @@
 package com.example.dictionaryapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -92,39 +93,32 @@ public class DatabaseAccess {
         cursor.close();
         return words;
     }
-    public ArrayList<Word> searchWordsAnhViet (String filter) {
-        ArrayList<Word> words = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT * FROM anh_viet where word like '"+ filter +"%' limit 30", null);
+
+    public ArrayList<String> getFavoriteWordsId(){
+        ArrayList<String> words = new ArrayList<String>();
+        Cursor cursor = database.rawQuery("SELECT * FROM favorite", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Word word = new Word(0, null, null);
-            word.setId(cursor.getInt(cursor.getColumnIndex("id")));
-            word.setWord(cursor.getString(cursor.getColumnIndex("word")));
-            word.setContent(cursor.getString(cursor.getColumnIndex("content")));
-            words.add(word);
+            words.add(cursor.getString(cursor.getColumnIndex("id")));
             cursor.moveToNext();
         }
         cursor.close();
         return words;
     }
 
-    public String getDefinition(String word) {
+    public void addToFavorite(int wordId){
+        System.out.println(wordId);
+        database.rawQuery("INSERT INTO favorite VALUES("+wordId+")", null);
+    }
+
+
+    public String getDefinition(String word, boolean isAnhViet) {
         String definition = "";
-        Cursor cursor = database.rawQuery("SELECT * FROM anh_viet where word='"+ word +"'", null);
+        String tableName = isAnhViet? "anh_viet" : "viet_anh";
+        Cursor cursor = database.rawQuery("SELECT * FROM "+tableName+" where word='"+ word +"'", null);
         cursor.moveToFirst();
         definition  = cursor.getString(2);
         cursor.close();
-
-        /*
-        if(definition.isEmpty()){
-            cursor = database.rawQuery("SELECT * FROM viet_anh where word='"+ word +"'", null);
-            cursor.moveToFirst();
-            definition  = cursor.getString(2);
-            cursor.close();
-        }
-
-         */
         return definition;
     }
-
 }
