@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/anhVietFragment">
+
+    <fragment
+        android:id="@+id/anhVietFragment"
+        android:name="com.example.dictionaryapp.ui.anhVietFragment"
+        android:label="Anh Việt"
+        tools:layout="@layout/fragment_anh_viet" />
+    <fragment
+        android:id="@+id/vietAnhFragment"
+        android:name="com.example.dictionaryapp.ui.vietAnhFragment"
+        android:label="fragment_viet_anh_list"
+        tools:layout="@layout/fragment_viet_anh" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.dictionaryapp.ui.favoriteFragment"
+        android:label="fragment_favorite_list"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/yourWordsFragment"
+        android:name="com.example.dictionaryapp.ui.yourWordsFragment"
+        android:label="fragment_favorite_list"
+        tools:layout="@layout/fragment_your_words" />
+</navigation>
