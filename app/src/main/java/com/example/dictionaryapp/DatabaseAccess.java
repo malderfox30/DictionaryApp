@@ -107,10 +107,14 @@ public class DatabaseAccess {
     }
 
     public void addToFavorite(int wordId){
-        System.out.println(wordId);
-        database.rawQuery("INSERT INTO favorite VALUES("+wordId+")", null);
+        String sql = "INSERT INTO favorite VALUES("+wordId+")";
+        database.execSQL(sql);
     }
 
+    public void removeFromFavorite(int wordId){
+        String sql = "DELETE FROM favorite WHERE id="+wordId+"";
+        database.execSQL(sql);
+    }
 
     public String getDefinition(String word, boolean isAnhViet) {
         String definition = "";

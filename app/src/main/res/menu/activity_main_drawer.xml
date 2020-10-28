@@ -3,22 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/primary_group"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/anhVietFragment"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_baseline_menu_book_24"
             android:title="English - Vietnamese" />
         <item
             android:id="@+id/vietAnhFragment"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_baseline_menu_book_24"
             android:title="Vietnamese - English" />
         <item
             android:id="@+id/favoriteFragment"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_baseline_star_24"
             android:title="Favorites" />
         <item
             android:id="@+id/yourWordsFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Your Words" />
+    </group>
+
+    <group android:checkableBehavior="none"
+        android:id="@+id/secondary_group"
+        xmlns:tools="http://schemas.android.com/tools">
+        <item
+            android:icon="@drawable/ic_baseline_favorite_24"
+            android:title="Like us" />
+        <item
+            android:icon="@drawable/ic_baseline_help_24"
+            android:title="Help" />
     </group>
 </menu>

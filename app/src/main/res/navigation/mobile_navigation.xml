@@ -8,21 +8,21 @@
     <fragment
         android:id="@+id/anhVietFragment"
         android:name="com.example.dictionaryapp.ui.anhVietFragment"
-        android:label="Anh Việt"
+        android:label="ENG - VIE"
         tools:layout="@layout/fragment_anh_viet" />
     <fragment
         android:id="@+id/vietAnhFragment"
         android:name="com.example.dictionaryapp.ui.vietAnhFragment"
-        android:label="fragment_viet_anh_list"
+        android:label="VIE - ENG"
         tools:layout="@layout/fragment_viet_anh" />
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.dictionaryapp.ui.favoriteFragment"
-        android:label="fragment_favorite_list"
+        android:label="Favorites"
         tools:layout="@layout/fragment_favorite" />
     <fragment
         android:id="@+id/yourWordsFragment"
         android:name="com.example.dictionaryapp.ui.yourWordsFragment"
-        android:label="fragment_favorite_list"
+        android:label="Your words"
         tools:layout="@layout/fragment_your_words" />
 </navigation>

@@ -19,14 +19,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.dictionaryapp.R;
+import com.example.dictionaryapp.SplashActivity;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class yourWordsFragment extends Fragment {
 
     private static final int REQUEST_CODE = 3005;
     private TextView tvRandomWord, tvLabel, tvScore, tvAnswer;
     private ImageButton ibVoice;
+    private Random random;
 
     public yourWordsFragment() {
         // Required empty public constructor
@@ -53,7 +56,18 @@ public class yourWordsFragment extends Fragment {
             }
         });
 
-        tvRandomWord.setText("a");
+        random = new Random();
+        tvRandomWord.setText(SplashActivity.anhVietWords.get(random.nextInt(SplashActivity.anhVietWords.size() - 257) + 256).getWord());
+        tvRandomWord.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                tvRandomWord.setText(SplashActivity.anhVietWords.get(random.nextInt(SplashActivity.anhVietWords.size() - 257) + 256).getWord());
+                tvAnswer.setText("Your answer");
+                tvAnswer.setTextColor(Color.BLACK);
+                return false;
+            }
+        });
+
         tvAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -67,14 +81,19 @@ public class yourWordsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                //Check if the answer is correct or not
-                if(tvAnswer.getText().toString().equals(tvRandomWord.getText().toString())){
-                    tvScore.setText("10đ");
-                    tvAnswer.setTextColor(Color.GREEN);
+                //Check whether the answer is correct or not
+                if(tvAnswer.getText() == "Your answer"){
+                    tvScore.setText("-");
                 }
                 else{
-                    tvScore.setText("0đ");
-                    tvAnswer.setTextColor(Color.RED);
+                    if(tvAnswer.getText().toString().equals(tvRandomWord.getText().toString())){
+                        tvScore.setText("10đ");
+                        tvAnswer.setTextColor(Color.GREEN);
+                    }
+                    else{
+                        tvScore.setText("0đ");
+                        tvAnswer.setTextColor(Color.RED);
+                    }
                 }
             }
         });
