@@ -22,6 +22,7 @@ import com.example.dictionaryapp.R;
 import com.example.dictionaryapp.SplashActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 public class yourWordsFragment extends Fragment {
@@ -86,7 +87,8 @@ public class yourWordsFragment extends Fragment {
                     tvScore.setText("-");
                 }
                 else{
-                    if(tvAnswer.getText().toString().equals(tvRandomWord.getText().toString())){
+                    //old condition : tvAnswer.getText().toString().equals(tvRandomWord.getText().toString())
+                    if(checkPronunciation(tvRandomWord, tvAnswer) == true){
                         tvScore.setText("10đ");
                         tvAnswer.setTextColor(Color.GREEN);
                     }
@@ -140,5 +142,21 @@ public class yourWordsFragment extends Fragment {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public boolean checkPronunciation(TextView word, TextView  input){
+        String formattedInput = input.getText().toString().toLowerCase(Locale.getDefault()).trim();
+        if(formattedInput.substring(formattedInput.length()).equals("s")){
+            formattedInput = formattedInput.substring(0, formattedInput.length() - 1);
+        }
+
+        String formattedWord = word.getText().toString().toLowerCase(Locale.getDefault()).trim();
+        formattedWord.replace("-", " ");
+        if(formattedWord.equals(formattedInput)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

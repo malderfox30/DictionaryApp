@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 18000;
+    private final int SPLASH_DISPLAY_LENGTH = 20000;
     private ProgressBar pbLoading;
     public static ArrayList<Word> anhVietWords;
     public static ArrayList<Word> vietAnhWords;
