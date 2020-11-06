@@ -32,6 +32,7 @@ public class yourWordsFragment extends Fragment {
     private TextView tvRandomWord, tvLabel, tvScore, tvAnswer;
     private ImageButton ibVoice;
     private Random random;
+    private boolean isWordChanged;
 
     public yourWordsFragment() {
         // Required empty public constructor
@@ -46,6 +47,7 @@ public class yourWordsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         MainActivity.fab.setVisibility(View.INVISIBLE);
+        isWordChanged = true;
         tvRandomWord = view.findViewById(R.id.tv_random_word);
         tvLabel = view.findViewById(R.id.tv_score_label);
         tvScore = view.findViewById(R.id.tv_score);
@@ -56,6 +58,7 @@ public class yourWordsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 speakButtonClicked(view);
+                isWordChanged = false;
             }
         });
 
@@ -67,6 +70,8 @@ public class yourWordsFragment extends Fragment {
                 tvRandomWord.setText(SplashActivity.anhVietWords.get(random.nextInt(SplashActivity.anhVietWords.size() - 257) + 256).getWord());
                 tvAnswer.setText("Your answer");
                 tvAnswer.setTextColor(Color.BLACK);
+                tvScore.setText("-");
+                isWordChanged = true;
                 return false;
             }
         });
@@ -85,7 +90,7 @@ public class yourWordsFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 //Check whether the answer is correct or not
-                if(tvAnswer.getText() == "Your answer"){
+                if(isWordChanged){
                     tvScore.setText("-");
                 }
                 else{

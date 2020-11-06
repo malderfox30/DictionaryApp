@@ -3,9 +3,10 @@ package com.example.dictionaryapp;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +16,17 @@ import com.example.dictionaryapp.model.Word;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Locale;
+import java.util.UUID;
+
 
 public class DefinitionActivity extends AppCompatActivity {
     private WebView wvDefinition;
     private FloatingActionButton fabFavorite;
     private boolean isFavorite;
     private AppCompatImageButton ibPronounce;
+    private TextToSpeech textToSpeech;
+    private String word;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -35,7 +41,7 @@ public class DefinitionActivity extends AppCompatActivity {
 
         //Lấy dữ liệu form kia gởi qua
         Intent intent = getIntent();
-        final String word = intent.getStringExtra("word");
+        word = intent.getStringExtra("word");
         this.setTitle(word);
 
         //query định nghĩa của từ từ csdl
@@ -97,7 +103,7 @@ public class DefinitionActivity extends AppCompatActivity {
                     }
                     dbAccess.setOpenHelperAnhViet();
                     if(isFavorite){
-                        SplashActivity.favoriteAnhVietWordsId.remove(SplashActivity.favoriteAnhVietWordsId.indexOf(Integer.toString(wordId)));  //TODO: FIX index
+                        SplashActivity.favoriteAnhVietWordsId.remove(SplashActivity.favoriteAnhVietWordsId.indexOf(Integer.toString(wordId)));
                         dbAccess.removeFromFavorite(wordId);
                         fabFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
                         Snackbar.make(view, "Removed from ENG-VIE favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -121,7 +127,7 @@ public class DefinitionActivity extends AppCompatActivity {
                     }
                     dbAccess.setOpenHelperVietAnh();
                     if(isFavorite){
-                        SplashActivity.favoriteAnhVietWordsId.remove(SplashActivity.favoriteAnhVietWordsId.indexOf(Integer.toString(wordId)));
+                        SplashActivity.favoriteVietAnhWordsId.remove(SplashActivity.favoriteVietAnhWordsId.indexOf(Integer.toString(wordId)));
                         dbAccess.removeFromFavorite(wordId);
                         fabFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
                         Snackbar.make(view, "Removed from VIE-ENG favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -138,5 +144,60 @@ public class DefinitionActivity extends AppCompatActivity {
                 dbAccess.close();
             }
         });
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                setTextToSpeechLanguage();
+            }
+        });
+
+        ibPronounce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speakOut();
+            }
+        });
+    }
+
+    private Locale getUserSelectedLanguage() {
+        if(MainActivity.isAnhViet){
+            return Locale.ENGLISH;
+        }
+        else{
+            return Locale.getDefault();
+        }
+    }
+
+    private boolean ready;
+
+    private void setTextToSpeechLanguage() {
+        Locale language = this.getUserSelectedLanguage();
+        if (language == null) {
+            this.ready = false;
+            return;
+        }
+        int result = textToSpeech.setLanguage(language);
+        if (result == TextToSpeech.LANG_MISSING_DATA) {
+            this.ready = false;
+            return;
+        } else if (result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            this.ready = false;
+            return;
+        } else {
+            this.ready = true;
+            Locale currentLanguage = textToSpeech.getVoice().getLocale();
+        }
+    }
+
+    private void speakOut() {
+        if (!ready) {
+            Toast.makeText(this, "Text to Speech not ready", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // Văn bản cần đọc.
+        String toSpeak = word;
+        String utteranceId = UUID.randomUUID().toString();
+        textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null, utteranceId);
     }
 }
