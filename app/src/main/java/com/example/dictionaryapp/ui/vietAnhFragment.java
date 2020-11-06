@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,12 +19,9 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
-import com.example.dictionaryapp.DatabaseAccess;
 import com.example.dictionaryapp.MainActivity;
 import com.example.dictionaryapp.MyAdapter;
 import com.example.dictionaryapp.R;
@@ -39,7 +37,7 @@ public class vietAnhFragment extends Fragment {
     private MyAdapter myAdapter;
     private ArrayList<Word> vietAnhWords;
     private ArrayList<Word> vietAnhStore;
-    private EditText edtSearch;
+    private SearchView svSearch;
     private ImageButton btnVoice;
     private static final int REQUEST_CODE = 3002;
     private static final int MAX_WORDS = 20;
@@ -57,8 +55,10 @@ public class vietAnhFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.vietAnhRecyclerView = view.findViewById(R.id.rv_viet_anh);
         this.vietAnhRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        MainActivity.fab.setVisibility(View.VISIBLE);
 
         MainActivity.isAnhViet = false;
+
         vietAnhWords = new ArrayList<Word>(SplashActivity.vietAnhWords);
         //Remove credits
         for(int i = 0; i < 3; i++){
@@ -72,7 +72,7 @@ public class vietAnhFragment extends Fragment {
 
 
         btnVoice =  view.findViewById(R.id.btn_voice);
-        edtSearch = (EditText) view.findViewById(R.id.edt_search);
+        svSearch =  view.findViewById(R.id.sv_search);
 
         // Disable button if no recognition service is present
         PackageManager pm = getContext().getPackageManager();
@@ -82,14 +82,15 @@ public class vietAnhFragment extends Fragment {
             btnVoice.setEnabled(false);
             //btnVoice.setText("Recognizer not present");
         }
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String content = s.toString().toLowerCase(Locale.getDefault());
+            public boolean onQueryTextChange(String newText) {
+                String content = newText.toLowerCase(Locale.getDefault());
                 vietAnhWords.clear();
                 if(content.isEmpty()){
                     vietAnhWords.addAll(vietAnhStore);
@@ -106,10 +107,7 @@ public class vietAnhFragment extends Fragment {
                     }
                 }
                 myAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
+                return false;
             }
         });
 
@@ -158,7 +156,7 @@ public class vietAnhFragment extends Fragment {
             if (!matches.isEmpty())
             {
                 String Query = matches.get(0);
-                edtSearch.setText(Query);
+                svSearch.setQuery(Query, false);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

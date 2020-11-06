@@ -11,14 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 
 import android.speech.RecognizerIntent;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.dictionaryapp.MainActivity;
@@ -36,7 +34,7 @@ public class anhVietFragment extends Fragment {
     private ArrayList<Word> anhVietWords;
     private ArrayList<Word> anhVietStore;
     private MyAdapter myAdapter;
-    private EditText edtSearch;
+    private SearchView svSearch;
     private ImageButton btnVoice;
     private static final int REQUEST_CODE = 3001;
     private static final int MAX_WORDS = 20;
@@ -55,6 +53,7 @@ public class anhVietFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.anhVietRecyclerView = view.findViewById(R.id.rv_anh_viet);
         this.anhVietRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        MainActivity.fab.setVisibility(View.VISIBLE);
 
         MainActivity.isAnhViet = true;
         anhVietWords = new ArrayList<Word>(SplashActivity.anhVietWords);
@@ -69,7 +68,7 @@ public class anhVietFragment extends Fragment {
         this.anhVietRecyclerView.setAdapter(myAdapter);
 
         btnVoice =  view.findViewById(R.id.btn_voice);
-        edtSearch = (EditText) view.findViewById(R.id.edt_search);
+        svSearch = view.findViewById(R.id.sv_search);
 
         // Disable button if no recognition service is present
         PackageManager pm = getContext().getPackageManager();
@@ -79,14 +78,15 @@ public class anhVietFragment extends Fragment {
             btnVoice.setEnabled(false);
             //btnVoice.setText("Recognizer not present");
         }
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // TODO Auto-generated method stub
+            public boolean onQueryTextSubmit(String s) {
+                return false;
             }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String content = s.toString().toLowerCase(Locale.getDefault());
+            public boolean onQueryTextChange(String s) {
+                String content = s.toLowerCase(Locale.getDefault());
                 anhVietWords.clear();
                 if(content.isEmpty()){
                     anhVietWords.addAll(anhVietStore);
@@ -104,10 +104,7 @@ public class anhVietFragment extends Fragment {
                     }
                 }
                 myAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                // TODO Auto-generated method stub
+                return false;
             }
         });
 
@@ -156,7 +153,7 @@ public class anhVietFragment extends Fragment {
             if (!matches.isEmpty())
             {
                 String Query = matches.get(0);
-                edtSearch.setText(Query);
+                svSearch.setQuery(Query, false);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.dictionaryapp.MainActivity;
 import com.example.dictionaryapp.R;
 import com.example.dictionaryapp.SplashActivity;
 
@@ -44,6 +45,7 @@ public class yourWordsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MainActivity.fab.setVisibility(View.INVISIBLE);
         tvRandomWord = view.findViewById(R.id.tv_random_word);
         tvLabel = view.findViewById(R.id.tv_score_label);
         tvScore = view.findViewById(R.id.tv_score);

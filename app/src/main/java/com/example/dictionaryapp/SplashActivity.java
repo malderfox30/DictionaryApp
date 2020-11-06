@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class SplashActivity extends Activity {
     /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 20000;
+    private final int SPLASH_DISPLAY_LENGTH = 18000;
     private ProgressBar pbLoading;
     public static ArrayList<Word> anhVietWords;
     public static ArrayList<Word> vietAnhWords;
@@ -29,7 +29,6 @@ public class SplashActivity extends Activity {
         pbLoading = findViewById(R.id.pb_loading);
         pbLoading.setVisibility(View.VISIBLE);
 
-        final DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
@@ -47,20 +46,22 @@ public class SplashActivity extends Activity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                databaseAccess.setOpenHelperAnhViet();
-                anhVietWords = databaseAccess.getWordsAnhViet();
-                favoriteAnhVietWordsId = databaseAccess.getFavoriteWordsId();
-                databaseAccess.close();
+                final DatabaseAccess databaseAccess1 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess1.setOpenHelperAnhViet();
+                anhVietWords = databaseAccess1.getWordsAnhViet();
+                favoriteAnhVietWordsId = databaseAccess1.getFavoriteWordsId();
+                databaseAccess1.close();
             }
         });
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                databaseAccess.setOpenHelperVietAnh();
-                vietAnhWords = databaseAccess.getWordsVietAnh();
-                favoriteVietAnhWordsId = databaseAccess.getFavoriteWordsId();
-                databaseAccess.close();
+                final DatabaseAccess databaseAccess2 = DatabaseAccess.getInstance(getApplicationContext());
+                databaseAccess2.setOpenHelperVietAnh();
+                vietAnhWords = databaseAccess2.getWordsVietAnh();
+                favoriteVietAnhWordsId = databaseAccess2.getFavoriteWordsId();
+                databaseAccess2.close();
             }
         });
     }

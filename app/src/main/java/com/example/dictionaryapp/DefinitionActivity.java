@@ -1,32 +1,37 @@
 package com.example.dictionaryapp;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
-import android.widget.TextView;
+import android.webkit.WebView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.example.dictionaryapp.model.Word;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.PropertyPermission;
 
 public class DefinitionActivity extends AppCompatActivity {
-    private TextView tvDefinition;
+    private WebView wvDefinition;
     private FloatingActionButton fabFavorite;
     private boolean isFavorite;
+    private AppCompatImageButton ibPronounce;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_definition);
 
         isFavorite = false;
-        tvDefinition = findViewById(R.id.tv_definition);
+        wvDefinition = findViewById(R.id.wv_definition);
         fabFavorite = findViewById(R.id.fab_favorite);
+        ibPronounce = findViewById(R.id.ib_pronounce);
 
         //Lấy dữ liệu form kia gởi qua
         Intent intent = getIntent();
@@ -64,7 +69,19 @@ public class DefinitionActivity extends AppCompatActivity {
         dbAccess.close();
 
         //Hiển thị trên textView
-        tvDefinition.setText(Html.fromHtml(definition));
+        //wvDefinition.setText(Html.fromHtml(definition));
+        String html = "<html><head>"
+        + "<style type=\"text/css\">" +
+                "body{padding: 10px; color: black;} " +
+                ".title{color: blue; font-size: 20px; font-weight: bold}" +
+                "body>span{font-size: 14px;}"+
+                "body>ul>li{}"+
+                "li>span{}"+
+                "</style></head><body>"+
+                definition+
+                "</body></html>";
+
+        wvDefinition.loadData(html, "text/html", null);
 
         fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,14 +100,14 @@ public class DefinitionActivity extends AppCompatActivity {
                         SplashActivity.favoriteAnhVietWordsId.remove(SplashActivity.favoriteAnhVietWordsId.indexOf(Integer.toString(wordId)));  //TODO: FIX index
                         dbAccess.removeFromFavorite(wordId);
                         fabFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                        Snackbar.make(view, "Removed to favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "Removed from ENG-VIE favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         isFavorite = false;
                     }
                     else{
                         SplashActivity.favoriteAnhVietWordsId.add(Integer.toString(wordId));
                         dbAccess.addToFavorite(wordId);
                         fabFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
-                        Snackbar.make(view, "Added to favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "Added to ENG-VIE favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         isFavorite = true;
                     }
 
@@ -107,21 +124,19 @@ public class DefinitionActivity extends AppCompatActivity {
                         SplashActivity.favoriteAnhVietWordsId.remove(SplashActivity.favoriteAnhVietWordsId.indexOf(Integer.toString(wordId)));
                         dbAccess.removeFromFavorite(wordId);
                         fabFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-                        Snackbar.make(view, "Removed to favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "Removed from VIE-ENG favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         isFavorite = false;
                     }
                     else{
                         SplashActivity.favoriteVietAnhWordsId.add(Integer.toString(wordId));
                         dbAccess.addToFavorite(wordId);
                         fabFavorite.setImageResource(R.drawable.ic_baseline_favorite_24);
-                        Snackbar.make(view, "Added to favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "Added to VIE-ENG favorites", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         isFavorite = true;
                     }
-
                 }
                 dbAccess.close();
             }
         });
     }
-
 }

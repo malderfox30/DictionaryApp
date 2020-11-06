@@ -3,17 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="0dp"
+    app:cardCornerRadius="20dp"
     android:elevation="6dp"
     app:cardElevation="3dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
     >
     <LinearLayout
         android:id="@+id/layout_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="10dp">
         <TextView
             android:id="@+id/tv_word"
             android:layout_width="match_parent"
@@ -26,6 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Definition of the word"
-            android:textSize="14dp"/>
+            android:textSize="12dp"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
